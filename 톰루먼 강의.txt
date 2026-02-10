@@ -1,0 +1,149 @@
+DefaultsOnly - 블루프린트 에디터에서만 이라는뜻
+
+라이더 - 쉬프트 + 알트  + O 
+라이더 - 컨트롤 + D
+
+언리얼 - 쉬프트 + F1 (실행하고 마우스 컨트롤 획득)
+언리얼 - 컨트롤 + P (오픈에셋)
+언리얼 - 컨트롤 + 스페이스 (컨텐츠 브라우저)
+
+Control Rotation 을 캐릭터랑 스프링암 모두 가지고 있음
+
+Camera Settings
+Use Pawn Control Rotation - 스프링암이 캐릭터의 컨트롤 회전에 따라 회전
+
+캐릭터 - Use Controller Rotation Yaw = true 
+캐릭터가 PlayerController의 좌우 회전(Yaw)을 따라 회전 
+
+
+--------------------------------------
+
+should bounce  - projectile movement 
+hidden in game 
+
+에디터 실행 화면 옆 점3개 - 시뮬레이트 
+F2 unlit mode 
+F3 lit view mode 
+
+프로젝트 설정 - 콜리전 - 프리셋 : 이 습관을 들이도록
+
+콜리전 트레이스 타입 - visibility  : 그냥 채널 이름임
+
+
+에셋 등록시는 항상 블루프린트에서하고 c++에서 안한다고함 (이득우랑 반대)
+
+생성자에서 뭐 수정하면 에디터 끄고해야 적용됨 CDO
+
+생성자에서 델리게이트 할당하지마 지옥이 될수잇음
+PostInitializeComponents 에서 해
+
+충돌체에 붙어잇는 델리게이트
+onComponentOverlap
+onComponentHit
+ 
+Sparse Delegate - 바인딩된 경우에만 힙에 메모리 할당/바인딩 안 하면 메모리 0
+
+NiagaraSystem은 여러 에미터를 가짐
+UNiagaraComponent 는 액터에 붙이는 용도 
+
+컨트롤러는 게임 내내 존재 이펙트처럼 없어지지 않음
+
+TSubclassOf: 클래스 타입 저장 (설계도)
+TObjectPtr: 인스턴스 저장 (실제 생성된 객체)
+
+스켈레톤에 소켓 추가하고 그 위치 받아오는거 배움
+
+UCLASS(abstract) 이거 배움 블루프린트 마크업 안하는거
+
+Instigator 어떤 행동을 시작한 주체(원인 제공자)
+발사한 주체의 충돌은 무시하는법 SphereComponent->IgnoreActorWhenMoving(GetInstigator(),true);
+
+--------------------------------------
+에셋 할당은 C++ 대신 항상 블루프린트에서 수행한다는 점을 기억
+
+틸트 = slomo 0.2
+슬롯은 그냥 애니몽타주가 플레이 되는 곳 : 원래 애니메이션 → 몽타주로 전환 (그냥 애니메이션 스위칭임)
+
+이펙스 생성
+UNiagaraFunctionLibrary::SpawnSystemAtLocation
+
+Damage Type 블루프린트에서 impulse 설정
+simulate physics : 디테일 패널
+can be damaged : 디테일 패널 
+
+input 트리거 설정은 input action에서 하는거임
+
+언리얼에서 c++ 클래스 생성 잘 안되면 플러그인 visual studio 2022 인테그레이션 문제임
+대신 Rider 에디터에서 붉은색으로 보이는 문제가 있음
+
+URadialForceComponent 특정 지점을 중심으로 방사형 물리력을 가하는 컴포넌트
+
+c++ 에서 SetSimulatePhysics 설정하면 반드시 SetCollisionProfileName 도 설정해주어야함
+
+
+--------------------------------------
+
+PrimaryActorTick.bStartWithTickEnabled = false;
+게임이 시작되거나 액터가 스폰될 때, Tick() 함수가 자동으로 실행되지 않도록 설정
+
+virtual void SetupInputComponent() override; 입력 바인딩 하는곳, 컨트롤러
+SetupPlayerInputComponent : 입력 바인딩 하는곳 , 플레이어 
+
+언리얼 - 컨트롤 + 쉬프트 + S : 모든 변경 사항 저장
+
+
+Engine  - Collision - Profile 에서
+Trace Type은 Collision queries 만 가능 
+CollisionEnabled : Query: Overlap/Trace 검사 가능 , Physics: 실제 물리 충돌 발생 (Block 적용)
+
+Trace 채널 만들고 Interaction
+LidMeshComponent->SetCollisionProfileName("Interaction");
+하면 원하는것만 상호작용 가능 
+
+
+- BlueprintNativeEvent: C++이 기본, BP가 오버라이드 가능
+- BlueprintImplementableEvent: BP에서만 구현 (C++ 본체 없음)
+
+UFUNCTION(BlueprintNativeEvent)
+void Interact();
+로 인터페이스를 블루프린트 노출시키면 반드시 Interface 상속하는 클래스의 함수는
+인터페이스에서 명명한 함수명_Implementation 이름으로 구현해야하고
+블루프린트에서 해당 함수를 이벤트 그래프에서 만들고 parent 호출도 해야함
+그리고 호출 시 직접 호출이 아니라 IRogueInteractionInterface::Execute_명명한 함수이름
+
+Level Blueprint 
+해당 레벨에 배치된 액터들을 직접 레퍼런스로 잡아서 스크립팅할 수 있음
+
+----
+[ 레벨 블루프린트에서 인터페이스 이벤트로 액터끼리 연결하는 흐름]
+* 레벨 BP가 중간 다리 역할로, 개별 BP끼리 직접 참조 없이 인터페이스를 통해 느슨하게 연결하는 방식
+레벨 BP에서는 일일이 레퍼런스 잡아야 함
+
+1. BP 클래스에 인터페이스 추가                                                                                                                                                                    
+  - 블루프린트 → Class Settings → Interfaces에서 인터페이스 추가
+  - 이벤트 그래프에서 해당 인터페이스 이벤트 구현
+
+2. 레벨 BP에서 인스턴스 레퍼런스 생성 + 이벤트 연결
+  - Open Level Blueprint
+  - 뷰포트에서 원하는 인스턴스 선택 → 우클릭 → Create a Reference to (액터)
+  - 그 레퍼런스에서 인터페이스 이벤트를 호출하도록 연결
+  - 이렇게 하면 레벨에 배치된 특정 인스턴스와 인터페이스 이벤트가 바인딩됨
+
+3. 트리거 대상 연결
+  - 이벤트 발생 시 작동시킬 액터도 뷰포트에서 선택 → 레퍼런스 만들어서 연결
+
+*Spatially Loaded - 월드 파티션 관련 내용 
+서로 상호작용 하는 물체가 멀리 떨어져잇으면 이거 off 하라는거
+
+--------------------------------------
+demystify 쉽게 설명해주다
+criteria 규준, 표준, 기준
+stripped-down 축약된, 가장 기본적인
+framing 구성
+depenetrated 비관통
+sake ~라는 목적으로
+get away with ~만으로 충분하다
+essentially 기본적으로
+stumble through 고생하면서 끝까지 해낸다
+preemptively  선제적으로 
+enormous 거대한
