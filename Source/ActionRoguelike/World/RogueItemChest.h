@@ -33,7 +33,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChestItemComplete();
 public:
-	virtual void Interact() override;
+	void Interact_Implementation();
 	virtual void Tick(float DeltaTime) override;
                                            
 	ARogueItemChest();
