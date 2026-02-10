@@ -29,6 +29,9 @@ protected:
 	float AnimationTargetPitch = 120.f;
 
 	float CurrentAnimationPitch = 0.0f;
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ChestItemComplete();
 public:
 	virtual void Interact() override;
 	virtual void Tick(float DeltaTime) override;
