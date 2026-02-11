@@ -27,7 +27,6 @@ public:
 	ARoguePlayerCharacter();
 
 protected:
-
 	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
 	TSubclassOf<ARogueProjectile> PrimaryAttackProjectileClass;
 
@@ -51,7 +50,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Move;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Look;
 
@@ -63,7 +62,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_SecondaryAttack;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_SpecialAttack;
 
@@ -72,26 +71,27 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
-	
-	UPROPERTY(VisibleAnywhere, Category="Components")
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<URogueActionSystemComponent> ActionSystemComponent;
-	
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void Move(const FInputActionValue& InValue);
-	
+
 	void Look(const FInputActionInstance& InValue);
 
 	void StartProjectileAttack(TSubclassOf<ARogueProjectile> ProjectileClass);
 
 	void AttackTimerElapsed(TSubclassOf<ARogueProjectile> ProjectileClass);
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
-public:	
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	                         class AController* EventInstigator, AActor* DamageCauser);
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
