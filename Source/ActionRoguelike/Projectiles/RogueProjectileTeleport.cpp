@@ -17,6 +17,7 @@ void ARogueProjectileTeleport::BeginPlay()
 	Super::BeginPlay();
 
 	GetWorldTimerManager().SetTimer(TeleportHandle, this, &ThisClass::StartDelayedTeleport, DetonateDelay);
+	GetInstigator()->MoveIgnoreActorAdd(this);
 }
 
 void ARogueProjectileTeleport::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -36,7 +37,6 @@ void ARogueProjectileTeleport::StartDelayedTeleport()
 {
 	PlayExplodeEffects();
 	
-	// Prevent moving us further ahead while we wait for the teleport to trigger
 	ProjectileMovementComponent->StopMovementImmediately();
 	// Hide all visuals and prevent any further collision while we wait on the teleport timer
 	LoopedNiagaraComponent->Deactivate();
