@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Projectiles/RogueProjectileBlackhole.h"
 
 // Sets default values
 ARoguePlayerCharacter::ARoguePlayerCharacter()
@@ -45,6 +46,7 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	
 	EnhancedInput->BindAction(Input_PrimaryAttack, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::PrimaryAttack);
 	EnhancedInput->BindAction(Input_Jump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	EnhancedInput->BindAction(Input_BlackHoleAttack, ETriggerEvent::Started, this, &ARoguePlayerCharacter::BlackHoleAttack);
 }
 
 void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
@@ -96,6 +98,29 @@ void ARoguePlayerCharacter::AttackTimerElapsed()
     AActor* NewProjectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
 
 	MoveIgnoreActorAdd(NewProjectile);
+}
+
+void ARoguePlayerCharacter::BlackHoleAttack()
+{
+	PlayAnimMontage(AttackMontage);
+	FTimerHandle AttackTimerHandle;
+	constexpr float AttackDelayTime = 0.2f;
+
+	UNiagaraFunctionLibrary::SpawnSystemAttached(CastingEffect, GetMesh(), MuzzleSocketName,
+		FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::Type::SnapToTarget, true);
+	
+	GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ARoguePlayerCharacter::AttackBlackHoleTimerElapsed, AttackDelayTime);
+}
+
+void ARoguePlayerCharacter::AttackBlackHoleTimerElapsed()
+{
+	FVector SpawnLocation = GetMesh()->GetSocketLocation(MuzzleSocketName);
+	FRotator SpawnRotation = GetControlRotation();
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Instigator = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AActor* NewProjectile = GetWorld()->SpawnActor<AActor>(BlackHoleClass, SpawnLocation, SpawnRotation, SpawnParams);
 }
 
 // Called every frame

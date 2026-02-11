@@ -170,8 +170,8 @@ Level Blueprint
 Hop back in         다시 (잽싸게) 합류하다/복귀하다
 
 intricacy  복잡한 사항
+depenetration 관통
 
-
-
-
+gotchas 예상치못한 실수 함정
+Hit the ground running   지체 없이 곧바로 착수하다
 
