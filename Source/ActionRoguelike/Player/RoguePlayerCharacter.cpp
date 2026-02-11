@@ -6,6 +6,7 @@
 #include "Projectiles/RogueProjectileMagic.h"
 #include "EnhancedInputComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "ActionSystem/RogueActionSystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -13,24 +14,25 @@
 // Sets default values
 ARoguePlayerCharacter::ARoguePlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComponent->SetupAttachment(RootComponent);
 	SpringArmComponent->bUsePawnControlRotation = true;
-	
+
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
 	MuzzleSocketName = "Muzzle_01";
+
+	ActionSystemComponent = CreateDefaultSubobject<URogueActionSystemComponent>(TEXT("ActionSystemComp"));
 }
 
 // Called when the game starts or when spawned
 void ARoguePlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called to bind functionality to input
@@ -42,16 +44,16 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 	EnhancedInput->BindAction(Input_Move, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::Move);
 	EnhancedInput->BindAction(Input_Look, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::Look);
-	
+
 	EnhancedInput->BindAction(Input_Jump, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::Jump);
 
 	// Projectile Attacks
 	EnhancedInput->BindAction(Input_PrimaryAttack, ETriggerEvent::Triggered, this,
-		&ARoguePlayerCharacter::StartProjectileAttack, PrimaryAttackProjectileClass);
+	                          &ARoguePlayerCharacter::StartProjectileAttack, PrimaryAttackProjectileClass);
 	EnhancedInput->BindAction(Input_SecondaryAttack, ETriggerEvent::Started, this,
-		&ARoguePlayerCharacter::StartProjectileAttack, SecondaryAttackProjectileClass);
+	                          &ARoguePlayerCharacter::StartProjectileAttack, SecondaryAttackProjectileClass);
 	EnhancedInput->BindAction(Input_SpecialAttack, ETriggerEvent::Started, this,
-		&ARoguePlayerCharacter::StartProjectileAttack, SpecialAttackProjectileClass);
+	                          &ARoguePlayerCharacter::StartProjectileAttack, SpecialAttackProjectileClass);
 }
 
 void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
@@ -60,7 +62,7 @@ void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
 
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
-	
+
 	// Forward/Back
 	AddMovementInput(ControlRot.Vector(), InputValue.X);
 
@@ -72,7 +74,7 @@ void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
 void ARoguePlayerCharacter::Look(const FInputActionInstance& InValue)
 {
 	FVector2D InputValue = InValue.GetValue().Get<FVector2D>();
-	
+
 	AddControllerPitchInput(InputValue.Y);
 	AddControllerYawInput(InputValue.X);
 }
@@ -82,10 +84,11 @@ void ARoguePlayerCharacter::StartProjectileAttack(TSubclassOf<ARogueProjectile> 
 	PlayAnimMontage(AttackMontage);
 
 	UNiagaraFunctionLibrary::SpawnSystemAttached(CastingEffect, GetMesh(), MuzzleSocketName,
-		FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::Type::SnapToTarget, true);
+	                                             FVector::ZeroVector, FRotator::ZeroRotator,
+	                                             EAttachLocation::Type::SnapToTarget, true);
 
 	UGameplayStatics::PlaySound2D(this, CastingSound);
-	
+
 	FTimerHandle AttackTimerHandle;
 	const float AttackDelayTime = 0.2f;
 
@@ -108,9 +111,17 @@ void ARoguePlayerCharacter::AttackTimerElapsed(TSubclassOf<ARogueProjectile> Pro
 	MoveIgnoreActorAdd(NewProjectile);
 }
 
+float ARoguePlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+                                        class AController* EventInstigator, AActor* DamageCauser)
+{
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	ActionSystemComponent->ApplyHealthChange(-ActualDamage);
+
+	return ActualDamage;
+}
+
 // Called every frame
 void ARoguePlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
