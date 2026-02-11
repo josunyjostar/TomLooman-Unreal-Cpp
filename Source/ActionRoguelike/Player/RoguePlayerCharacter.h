@@ -6,9 +6,8 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
-class ARogueProjectileBlackhole;
+class ARogueProjectileBase;
 class UNiagaraSystem;
-class ARogueProjectileMagic;
 struct FInputActionInstance;
 struct FInputActionValue;
 class UInputAction;
@@ -22,63 +21,70 @@ class ACTIONROGUELIKE_API ARoguePlayerCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ARoguePlayerCharacter();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category="BlackHoleAttack")
-	TSubclassOf<ARogueProjectileBlackhole> BlackHoleClass;
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TSubclassOf<ARogueProjectileBase> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectileMagic> ProjectileClass;
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TSubclassOf<ARogueProjectileBase> BlackHoleClass;
 
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
+	TSubclassOf<ARogueProjectileBase> TeleportClass;
+
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<UNiagaraSystem> CastingEffect;
 
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<USoundBase> CastingSound;
 
-	UPROPERTY(VisibleAnywhere, Category="PrimaryAttack")
+	UPROPERTY(VisibleAnywhere, Category="Attack")
 	FName MuzzleSocketName;
 
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<UAnimMontage> AttackMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Move;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Look;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Jump;
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_PrimaryAttack;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_BlackHoleAttack;
+
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> Input_Teleport;
 
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UCameraComponent> CameraComponent;
 
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
-	
-	// Called when the game starts or when spawned
+
 	virtual void BeginPlay() override;
 
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InValue);
+
+	void SpawnProjectile(TSubclassOf<ARogueProjectileBase> InClass);
+	void StartAttack(TSubclassOf<ARogueProjectileBase> InClass);
+
 	void PrimaryAttack();
-	void AttackTimerElapsed();
 	void BlackHoleAttack();
-	void AttackBlackHoleTimerElapsed();
-public:	
-	// Called every frame
+	void Teleport();
+
+public:
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+private: 
+	float AttackDelay = 0.2f;
 };
