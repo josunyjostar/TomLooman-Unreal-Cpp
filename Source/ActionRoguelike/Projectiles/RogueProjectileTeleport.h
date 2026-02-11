@@ -3,27 +3,34 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "RogueProjectileBase.h"
+#include "RogueProjectile.h"
 #include "RogueProjectileTeleport.generated.h"
 
-class UNiagaraSystem;
-
 UCLASS()
-class ACTIONROGUELIKE_API ARogueProjectileTeleport : public ARogueProjectileBase
+class ACTIONROGUELIKE_API ARogueProjectileTeleport : public ARogueProjectile
 {
 	GENERATED_BODY()
 
-public:
-	ARogueProjectileTeleport();
-
 protected:
+	/* re-usable handle for the initial explosion delay and the teleportation (only 1 timer must be active) */
+	FTimerHandle TeleportHandle;
+
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	float DetonateDelay = 0.2f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	float TeleportSecondaryDelay = 0.2f;
+
+	void StartDelayedTeleport();
+
+	void HandleTeleportation();
+
 	virtual void BeginPlay() override;
-	virtual  void PostInitializeComponents() override;
-	void Explode();
-	void Teleport();
-	UFUNCTION()
-	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+		FVector NormalImpulse, const FHitResult& Hit) override;
+
+public:
 	
-	UPROPERTY(EditDefaultsOnly, Category="Effects")
-	TObjectPtr<UNiagaraSystem> ExplosionEffect;
+	ARogueProjectileTeleport();
 };

@@ -3,30 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "RogueProjectileBase.h"
+#include "RogueProjectile.h"
 #include "RogueProjectileBlackhole.generated.h"
 
 class URadialForceComponent;
 
 UCLASS()
-class ACTIONROGUELIKE_API ARogueProjectileBlackhole : public ARogueProjectileBase
+class ACTIONROGUELIKE_API ARogueProjectileBlackhole : public ARogueProjectile
 {
 	GENERATED_BODY()
 
-public:
-	ARogueProjectileBlackhole();
-	virtual void BeginPlay() override;
-
 protected:
-	UPROPERTY(VisibleAnywhere, Category="Components")
+	
+	UPROPERTY(VisibleAnywhere, Category= "Components")
 	TObjectPtr<URadialForceComponent> RadialForceComponent;
 
 	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnSphereOverlappedActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
+public:
+	
 	virtual void PostInitializeComponents() override;
 
-private:
-	void DestroySelf();
+	ARogueProjectileBlackhole();
 };
