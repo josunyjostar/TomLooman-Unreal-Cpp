@@ -28,6 +28,10 @@
 		{
 			"Name": "VisualStudioSourceCodeAccess",
 			"Enabled": false
+		},
+		{
+			"Name": "UnrealMCP",
+			"Enabled": true
 		}
 	]
 }
