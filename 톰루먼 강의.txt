@@ -167,3 +167,5 @@ standpoint 관점
 in line ~와 일치하는
 trajectory 궤적
 
+transcribed 바꾸다[옮기다]
+tidbit  작은 정보
