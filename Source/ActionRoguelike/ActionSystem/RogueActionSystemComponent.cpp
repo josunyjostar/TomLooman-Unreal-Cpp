@@ -11,7 +11,8 @@ URogueActionSystemComponent::URogueActionSystemComponent()
 
 void URogueActionSystemComponent::ApplyHealthChange(float InValueChange)
 {
+	float OldHealth = InValueChange;
 	Attributes.Health += InValueChange;
-
-	UE_LOG(LogTemp, Log, TEXT("New Health: %f"), Attributes.Health);
+	
+	OnHealthChanged.Broadcast(Attributes.Health, OldHealth);
 }
