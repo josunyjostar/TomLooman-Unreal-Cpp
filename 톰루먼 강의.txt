@@ -163,7 +163,7 @@ Level Blueprint
 
 -------------------
 
-
+standpoint 관점
 
 
 
