@@ -160,12 +160,10 @@ Level Blueprint
 --------------------------------------
 
 ~ 누르고 show collision 
-
+TAutoConsoleVariable<>
 
 -------------------
 standpoint 관점
 in line ~와 일치하는
 trajectory 궤적
-
-
 
