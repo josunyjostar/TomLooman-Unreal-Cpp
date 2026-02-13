@@ -8,6 +8,14 @@ DefaultsOnly - 블루프린트 에디터에서만 이라는뜻
 언리얼 - 컨트롤 + P (오픈에셋)
 언리얼 - 컨트롤 + 스페이스 (컨텐츠 브라우저)
 
+~ 누르고 show collision 
+TAutoConsoleVariable<>
+' 누르면 게임 디버그  (AI의 경우 해당 AI가 근처에 잇거나 선택해야 뜸)
+
+에디터 실행 화면 옆 점3개 - 시뮬레이트 
+F2 unlit mode 
+F3 lit view mode 
+
 Control Rotation 을 캐릭터랑 스프링암 모두 가지고 있음
 
 Camera Settings
@@ -16,15 +24,10 @@ Use Pawn Control Rotation - 스프링암이 캐릭터의 컨트롤 회전에 따
 캐릭터 - Use Controller Rotation Yaw = true 
 캐릭터가 PlayerController의 좌우 회전(Yaw)을 따라 회전 
 
-
 --------------------------------------
 
 should bounce  - projectile movement 
 hidden in game 
-
-에디터 실행 화면 옆 점3개 - 시뮬레이트 
-F2 unlit mode 
-F3 lit view mode 
 
 프로젝트 설정 - 콜리전 - 프리셋 : 이 습관을 들이도록
 
@@ -160,37 +163,28 @@ Level Blueprint
   - 커스텀 함수: 특정 BP 타입에 종속된 함수를 직접 호출 (단순하고 직관적)
 --------------------------------------
 
-~ 누르고 show collision 
-TAutoConsoleVariable<>
+강의 11 - 행동 트리 정리
 
---------------------------------------
-AI 컨트롤러에 행동트리를 연결
-그리고 해당 AI에 컨트롤러 연결 (C++ 클래스 할당하지 않도록 조심할것 C++ 클래스는 행동트리 에셋이 할당되지 않으니까)
+1. AI 컨트롤러 설정
+ - AI 컨트롤러에 행동트리 연결
+ - AI에 컨트롤러 할당 시 C++ 클래스가 아닌 블루프린트 클래스를 할당할 것 (C++ 클래스에는 행동트리 에셋이 할당 안 됨)
 
-AI는 네비메쉬 없으면 동작 안함 네비메쉬 단축키 P
-Modeling Tools Editor Mode 플러그인 활성화
-월드 물체가 네비메쉬 생성 방해시 Can Ever Affect Navigation
+2. 네비메쉬
+ - AI는 네비메쉬 없으면 동작 안 함
+ - 시각화 단축키: P
+ - Modeling Tools Editor Mode 플러그인 활성화 필요
+ - 월드 물체가 네비메쉬 방해 시: Can Ever Affect Navigation 확인
 
+3. 행동 트리 노드
+ - 시퀀스 - 좌→우 순서 실행
+ - 셀렉터 - 실행 가능한 노드 탐색
+ - 서비스 - 자식 노드 활성화 중 특정 간격으로 반복 실행
 
-행동트리 
-
-1. 시퀀스 노드 
-  좌->우 실행
-
-2. 셀렉터 
-연결된 노드중 실행 가능한거 탐색
-
-서비스(service)는 자식 노드들이 활성화되어 있는 동안 특정 간격으로 실행되는 것
-
-Line Trace는 결과가 나올 때까지 다음 로직으로 넘어가지 않고 게임 스레드를 멈춰 세움
-충돌 쿼리(collision query)를 실행 마찬가지
+*성능 주의
+ - Line Trace / 충돌 쿼리 - 둘 다 블로킹 동작 (게임 스레드 멈춤)
 
 -------------------
 
-Gist 요약
-corrupted  손상된
-stall 멈추게하다
-sits on  ~에 위치하다
-Half-decently 완벽하진 않더라도 제구실은 하게
-deviation 편차
-bookkeeping 장부정리
+
+*학습 필요 
+Gaussian Random & Normal Distribution
