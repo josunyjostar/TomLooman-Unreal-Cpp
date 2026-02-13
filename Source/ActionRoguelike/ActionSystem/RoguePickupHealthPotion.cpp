@@ -3,10 +3,9 @@
 
 #include "RoguePickupHealthPotion.h"
 
+#include "RogueActionSystemComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Player/RoguePlayerCharacter.h"
-
 
 ARoguePickupHealthPotion::ARoguePickupHealthPotion() : ARoguePickup()
 {
@@ -24,15 +23,12 @@ void ARoguePickupHealthPotion::OnSphereOverlappedActor(UPrimitiveComponent* Over
                                                        bool bFromSweep,
                                                        const FHitResult& SweepResult)
 {
-	if (ARoguePlayerCharacter* Player = Cast<ARoguePlayerCharacter>(OtherActor))
-	{
-		if (Player->GetHealthPercent() < 1.f)
-		{
-			Player->ApplyHealthChange(20.f);
-			UGameplayStatics::PlaySoundAtLocation(this, PickupSound, GetActorLocation(), FRotator::ZeroRotator);
-			Destroy();
-		}
+	URogueActionSystemComponent* ActionComp = OtherActor->GetComponentByClass<URogueActionSystemComponent>();
 
-		UE_LOG(LogTemp, Warning, TEXT("Pawn overlapped: %s"), *Player->GetName());
+	if (ensure(ActionComp!= nullptr) && ActionComp->IsFullHealth())
+	{
+		ActionComp->ApplyHealthChange(HealingAmount);
+		UGameplayStatics::PlaySoundAtLocation(this, PickupSound, GetActorLocation(), FRotator::ZeroRotator);
+		Destroy();
 	}
 }

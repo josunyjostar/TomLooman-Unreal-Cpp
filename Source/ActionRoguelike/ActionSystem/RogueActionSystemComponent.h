@@ -31,8 +31,8 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	void ApplyHealthChange(float InValueChange);
-	float GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
+	void	ApplyHealthChange(float InValueChange);
+	float	IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;

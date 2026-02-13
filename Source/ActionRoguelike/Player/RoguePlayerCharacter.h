@@ -92,8 +92,7 @@ protected:
 	void OnHealthCanged(float NewHealth, float OldHealth);
 
 public:
-	void ApplyHealthChange(float InValueChange);
-	float GetHealthPercent();
+
 	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

@@ -8,7 +8,7 @@
 
 class USphereComponent;
 
-UCLASS()
+UCLASS(Abstract)
 class ACTIONROGUELIKE_API ARoguePickup : public AActor
 {
 	GENERATED_BODY()
@@ -26,5 +26,12 @@ protected:
 	TObjectPtr<USoundBase> PickupSound;
 
 	UPROPERTY(EditDefaultsOnly, Category="Pickup")
-	float SphereRadius = 10.f;
+	float SphereRadius = 64.f;
+protected:
+	virtual void PostInitializeComponents() override;
+public:
+	UFUNCTION()
+	virtual void OnSphereOverlappedActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                     UPrimitiveComponent* OtherComp,
+	                                     int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

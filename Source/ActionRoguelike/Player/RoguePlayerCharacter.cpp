@@ -14,8 +14,9 @@
 #include "Kismet/GameplayStatics.h"
 
 TAutoConsoleVariable<float> CVarProjectileAdjustmentDebugDrawing(TEXT("game.projectile.DebugDraw"), 0.0f,
-	TEXT("Enable projectile aim adjustment debug rendering. (0 = off, > 0 is duration)"),
-	ECVF_Cheat);
+                                                                 TEXT(
+	                                                                 "Enable projectile aim adjustment debug rendering. (0 = off, > 0 is duration)"),
+                                                                 ECVF_Cheat);
 
 ARoguePlayerCharacter::ARoguePlayerCharacter()
 {
@@ -153,10 +154,11 @@ void ARoguePlayerCharacter::AttackTimerElapsed(TSubclassOf<ARogueProjectile> Pro
 
 		// the original path of the projectile
 		DrawDebugLine(World, SpawnLocation, SpawnLocation + (GetControlRotation().Vector() * 5000.0f), FColor::Purple,
-			false, DebugDrawDuration);
+		              false, DebugDrawDuration);
 	}
 #endif
 }
+
 float ARoguePlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
                                         class AController* EventInstigator, AActor* DamageCauser)
 {
@@ -174,14 +176,4 @@ void ARoguePlayerCharacter::OnHealthCanged(float NewHealth, float OldHealth)
 		GetMovementComponent()->StopMovementImmediately();
 		PlayAnimMontage(DeathMontage);
 	}
-}
-
-void ARoguePlayerCharacter::ApplyHealthChange(float InValueChange)
-{
-	ActionSystemComponent->ApplyHealthChange(InValueChange);	
-}
-
-float ARoguePlayerCharacter::GetHealthPercent()
-{
-	 return ActionSystemComponent->GetHealthPercent();
 }

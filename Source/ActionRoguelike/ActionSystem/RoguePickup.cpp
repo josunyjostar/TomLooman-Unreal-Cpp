@@ -1,9 +1,5 @@
 ﻿#include "RoguePickup.h"
-
-#include "RogueActionSystemComponent.h"
 #include "Components/SphereComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Player/RoguePlayerCharacter.h"
 
 ARoguePickup::ARoguePickup()
 {
@@ -14,5 +10,16 @@ ARoguePickup::ARoguePickup()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
 	StaticMeshComponent->SetupAttachment(RootComponent);
+	StaticMeshComponent->SetCollisionProfileName("NoCollision");
+}
+
+void ARoguePickup::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+}
+
+void ARoguePickup::OnSphereOverlappedActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
 }
 
