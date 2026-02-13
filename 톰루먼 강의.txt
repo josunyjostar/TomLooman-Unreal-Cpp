@@ -2,6 +2,7 @@ DefaultsOnly - 블루프린트 에디터에서만 이라는뜻
 
 라이더 - 쉬프트 + 알트  + O 
 라이더 - 컨트롤 + D
+라이더 - 컨트롤 + 쉬프트 + K
 
 언리얼 - 쉬프트 + F1 (실행하고 마우스 컨트롤 획득)
 언리얼 - 컨트롤 + P (오픈에셋)
@@ -179,8 +180,17 @@ Modeling Tools Editor Mode 플러그인 활성화
 2. 셀렉터 
 연결된 노드중 실행 가능한거 탐색
 
+서비스(service)는 자식 노드들이 활성화되어 있는 동안 특정 간격으로 실행되는 것
+
+Line Trace는 결과가 나올 때까지 다음 로직으로 넘어가지 않고 게임 스레드를 멈춰 세움
+충돌 쿼리(collision query)를 실행 마찬가지
+
 -------------------
 
 Gist 요약
 corrupted  손상된
 stall 멈추게하다
+sits on  ~에 위치하다
+Half-decently 완벽하진 않더라도 제구실은 하게
+deviation 편차
+bookkeeping 장부정리
