@@ -175,3 +175,13 @@ void ARoguePlayerCharacter::OnHealthCanged(float NewHealth, float OldHealth)
 		PlayAnimMontage(DeathMontage);
 	}
 }
+
+void ARoguePlayerCharacter::ApplyHealthChange(float InValueChange)
+{
+	ActionSystemComponent->ApplyHealthChange(InValueChange);	
+}
+
+float ARoguePlayerCharacter::GetHealthPercent()
+{
+	 return ActionSystemComponent->GetHealthPercent();
+}

@@ -47,7 +47,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
 	TObjectPtr<UAnimMontage> AttackMontage;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Death")
 	TObjectPtr<UAnimMontage> DeathMontage;
 
@@ -77,7 +77,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<URogueActionSystemComponent> ActionSystemComponent;
-	
+
 	void Move(const FInputActionValue& InValue);
 
 	void Look(const FInputActionInstance& InValue);
@@ -89,9 +89,11 @@ protected:
 	                         class AController* EventInstigator, AActor* DamageCauser);
 
 	UFUNCTION()
-	void OnHealthCanged(float NewHealth,float OldHealth);
-public:
+	void OnHealthCanged(float NewHealth, float OldHealth);
 
+public:
+	void ApplyHealthChange(float InValueChange);
+	float GetHealthPercent();
 	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
