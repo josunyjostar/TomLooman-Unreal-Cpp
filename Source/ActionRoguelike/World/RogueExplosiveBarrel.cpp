@@ -14,6 +14,7 @@ ARogueExplosiveBarrel::ARogueExplosiveBarrel()
 {
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	MeshComponent->SetSimulatePhysics(true);
+	MeshComponent->SetCanEverAffectNavigation(false);
 	// Blueprint automatically sets this collision profile when enabling simulate physics, in C++ we do this manually.
 	MeshComponent->SetCollisionProfileName("PhysicsActor");
 	RootComponent = MeshComponent;

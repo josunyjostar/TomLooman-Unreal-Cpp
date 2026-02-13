@@ -162,4 +162,25 @@ Level Blueprint
 ~ 누르고 show collision 
 TAutoConsoleVariable<>
 
+--------------------------------------
+AI 컨트롤러에 행동트리를 연결
+그리고 해당 AI에 컨트롤러 연결 (C++ 클래스 할당하지 않도록 조심할것 C++ 클래스는 행동트리 에셋이 할당되지 않으니까)
+
+AI는 네비메쉬 없으면 동작 안함 네비메쉬 단축키 P
+Modeling Tools Editor Mode 플러그인 활성화
+월드 물체가 네비메쉬 생성 방해시 Can Ever Affect Navigation
+
+
+행동트리 
+
+1. 시퀀스 노드 
+  좌->우 실행
+
+2. 셀렉터 
+연결된 노드중 실행 가능한거 탐색
+
 -------------------
+
+Gist 요약
+corrupted  손상된
+stall 멈추게하다
