@@ -183,8 +183,25 @@ Level Blueprint
 *성능 주의
  - Line Trace / 충돌 쿼리 - 둘 다 블로킹 동작 (게임 스레드 멈춤)
 
+
+TaskNode - 행동트리에 없는거 커스텀으로 만드는거
+
 -------------------
 
 
-*학습 필요 
-Gaussian Random & Normal Distribution
+
+
+
+
+
+
+
+chugging along 느릿하지만 꾸준히 잘 돌아가다
+shorthand 약칭
+viable 실행 가능한
+
+
+
+
+
+
