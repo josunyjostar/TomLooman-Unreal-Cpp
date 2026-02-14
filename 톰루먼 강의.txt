@@ -7,6 +7,9 @@ DefaultsOnly - 블루프린트 에디터에서만 이라는뜻
 언리얼 - 쉬프트 + F1 (실행하고 마우스 컨트롤 획득)
 언리얼 - 컨트롤 + P (오픈에셋)
 언리얼 - 컨트롤 + 스페이스 (컨텐츠 브라우저)
+Win + Ctrl + L 
+
+Tool -> Visual Logger
 
 ~ 누르고 show collision 
 TAutoConsoleVariable<>
@@ -210,6 +213,36 @@ Observer Aborts: Lower Priority
 
 -------------------
 
+=== EQS (Environment Query System) ===
+
+행동트리에서 EQS노드 만들고 BP_EnvirentQuery 연결 (기준점은 c++ 커스텀)
+
+[구성 요소]
+- Generator : 평가할 후보 포인트(아이템)들을 생성
+- Context   : 쿼리의 기준점 (누구 기준으로 평가할지)
+- Test      : 각 후보 포인트를 필터링/점수 매기기
+
+[Test Purpose]
+- Filter Only      : 조건 불만족 아이템 제거만 (점수 X)
+- Score Only       : 점수만 부여 (제거 X)
+- Filter and Score : 필터링 + 점수 부여 둘 다 수행
+
+[EnvQueryTest_Trace]
+- 라인 트레이스로 시야 차단 여부를 판단하는 테스트
+- Bool Match = True  → 시야가 차단된 후보만 통과 (엄폐물 뒤 찾기 등)
+- Bool Match = False → 시야가 차단되지 않은 후보만 통과 (직접 보이는 위치)
+
+[커스텀 Context - RogueEnvQueryContext_TargetActor] : EQS 시스템의 평가 기준점
+- 기본 Querier는 AI 자신이 기준점
+- 공격 대상(플레이어) 기준으로 평가하려면 커스텀 Context 필요
+- 블랙보드의 TargetActor를 기준점으로 제공
+
+[BTTask_RunEQSQuery - BlackboardKey]
+- EQS 결과(최적 위치)를 블랙보드에 저장할 키를 지정
+- 흐름: EQS 실행 → 최적 위치 선정 → BlackboardKey에 저장 → MoveTo가 읽어서 이동
+
+
+-------------------
 
 
 
@@ -218,6 +251,9 @@ Observer Aborts: Lower Priority
 
 
 
+
+
+-------------------
 chugging along 느릿하지만 꾸준히 잘 돌아가다
 shorthand 약칭
 viable 실행 가능한
