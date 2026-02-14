@@ -186,6 +186,28 @@ Level Blueprint
 
 TaskNode - 행동트리에 없는거 커스텀으로 만드는거
 
+
+Sequence (시퀀스)
+
+우선순위대로 실행
+하나라도 실패하면 중단 (AND 로직)
+모두 성공해야 Success
+
+Selector (셀렉터)
+
+우선순위대로 실행
+하나라도 성공하면 중단 (OR 로직)
+모두 실패해야 Failure
+
+Decorator (데코레이터)
+
+노드의 실행 조건 설정
+성공/실패 판정 변경 가능
+실행 중 감시 및 중단
+
+Observer Aborts: Lower Priority
+- 데코레이터가 붙은 노드보다 우선순위가 낮은(오른쪽에 있는) 노드들이 실행 중일 때, 조건 변화 시 그것들을 중단시키는 옵션
+
 -------------------
 
 
@@ -199,9 +221,6 @@ TaskNode - 행동트리에 없는거 커스텀으로 만드는거
 chugging along 느릿하지만 꾸준히 잘 돌아가다
 shorthand 약칭
 viable 실행 가능한
-
-
-
 
 
 
