@@ -33,6 +33,7 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 public:
 	void	ApplyHealthChange(float InValueChange);
 	float	IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
+	float	GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;

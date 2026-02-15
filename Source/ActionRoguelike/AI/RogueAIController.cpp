@@ -3,6 +3,7 @@
 
 #include "RogueAIController.h"
 
+#include "RogueGameTypes.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,9 +18,9 @@ void ARogueAIController::BeginPlay()
 
 	RunBehaviorTree(BehaviorTree);
 	
-	FName TargetActor = FName("TargetActor");
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 	check(PlayerPawn);
 
-	GetBlackboardComponent()->SetValueAsObject(TargetActor, PlayerPawn);
+	GetBlackboardComponent()->SetValueAsObject(NAME_TargetActor, PlayerPawn);
+	GetBlackboardComponent()->SetValueAsFloat(NAME_HealPercent, 1.0f);
 }
