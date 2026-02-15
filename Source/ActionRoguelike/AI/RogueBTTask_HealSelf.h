@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "RogueBTTask_Heal.generated.h"
+#include "RogueBTTask_HealSelf.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ACTIONROGUELIKE_API URogueBTTask_Heal : public UBTTaskNode
+class ACTIONROGUELIKE_API URogueBTTask_HealSelf : public UBTTaskNode
 {
 	GENERATED_BODY()
-	URogueBTTask_Heal();
+	UPROPERTY(EditAnywhere, Category="AI")
+	float HealAmount = 100;
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

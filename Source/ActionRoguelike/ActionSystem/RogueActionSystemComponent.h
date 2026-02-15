@@ -34,6 +34,8 @@ public:
 	void	ApplyHealthChange(float InValueChange);
 	float	IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
 	float	GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
+	float	GetHealth() const;
+	float	GetHealthMax() const;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
