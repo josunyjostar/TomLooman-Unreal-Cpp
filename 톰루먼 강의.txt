@@ -245,9 +245,7 @@ Observer Aborts: Lower Priority
 -------------------
 
 
-
-
-
+NewObject는 AActor를 상속받지 않은 일반 C++ 클래스(UObject 상속 클래스)의 인스턴스를 생성할 때 사용
 
 
 
@@ -257,6 +255,6 @@ Observer Aborts: Lower Priority
 chugging along 느릿하지만 꾸준히 잘 돌아가다
 shorthand 약칭
 viable 실행 가능한
-
+quick hack 임시방편
 
 

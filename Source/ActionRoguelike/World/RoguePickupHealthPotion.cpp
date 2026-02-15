@@ -3,7 +3,7 @@
 
 #include "RoguePickupHealthPotion.h"
 
-#include "RogueActionSystemComponent.h"
+#include "ActionSystem/RogueActionSystemComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 

@@ -55,7 +55,8 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 	// Projectile Attacks
 	EnhancedInput->BindAction(Input_PrimaryAttack, ETriggerEvent::Triggered, this,
-	                          &ARoguePlayerCharacter::StartProjectileAttack, PrimaryAttackProjectileClass);
+	&ARoguePlayerCharacter::StartAction, FName("PrimaryAttack"));
+	                          
 	EnhancedInput->BindAction(Input_SecondaryAttack, ETriggerEvent::Started, this,
 	                          &ARoguePlayerCharacter::StartProjectileAttack, SecondaryAttackProjectileClass);
 	EnhancedInput->BindAction(Input_SpecialAttack, ETriggerEvent::Started, this,
@@ -176,4 +177,9 @@ void ARoguePlayerCharacter::OnHealthCanged(float NewHealth, float OldHealth)
 		GetMovementComponent()->StopMovementImmediately();
 		PlayAnimMontage(DeathMontage);
 	}
+}
+
+void ARoguePlayerCharacter::StartAction(FName InActionName)
+{
+	ActionSystemComponent->StartAction(InActionName);
 }

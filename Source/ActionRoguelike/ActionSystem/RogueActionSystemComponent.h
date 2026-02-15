@@ -7,6 +7,8 @@
 #include "RogueActionSystemComponent.generated.h"
 
 
+class URogueAction;
+
 USTRUCT(BlueprintType)
 struct FRogueAttributeSet
 {
@@ -31,18 +33,24 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	void	ApplyHealthChange(float InValueChange);
-	float	IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
-	float	GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
-	float	GetHealth() const;
-	float	GetHealthMax() const;
+	void StartAction(FName InActionName);
 	
+	void ApplyHealthChange(float InValueChange);
+	float IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
+	float GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
+	float GetHealth() const;
+	float GetHealthMax() const;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 
+	virtual void InitializeComponent() override;
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes")
 	FRogueAttributeSet Attributes;
+
+	UPROPERTY()
+	TArray<TObjectPtr<URogueAction>> Actions;
 
 public:
 	URogueActionSystemComponent();

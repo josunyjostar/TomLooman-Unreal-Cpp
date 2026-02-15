@@ -91,6 +91,7 @@ protected:
 	UFUNCTION()
 	void OnHealthCanged(float NewHealth, float OldHealth);
 
+	void StartAction(FName InActionName);
 public:
 
 	virtual void PostInitializeComponents() override;
