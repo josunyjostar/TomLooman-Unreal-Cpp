@@ -7,9 +7,6 @@
 #include "RoguePlayerCharacter.generated.h"
 
 class URogueActionSystemComponent;
-class ARogueProjectile;
-class UNiagaraSystem;
-class ARogueProjectileMagic;
 struct FInputActionInstance;
 struct FInputActionValue;
 class UInputAction;
@@ -23,31 +20,9 @@ class ACTIONROGUELIKE_API ARoguePlayerCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ARoguePlayerCharacter();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectile> PrimaryAttackProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectile> SecondaryAttackProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectile> SpecialAttackProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TObjectPtr<UNiagaraSystem> CastingEffect;
-
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TObjectPtr<USoundBase> CastingSound;
-
-	UPROPERTY(VisibleAnywhere, Category="PrimaryAttack")
-	FName MuzzleSocketName;
-
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TObjectPtr<UAnimMontage> AttackMontage;
-
 	UPROPERTY(EditDefaultsOnly, Category="Death")
 	TObjectPtr<UAnimMontage> DeathMontage;
 
@@ -79,12 +54,9 @@ protected:
 	TObjectPtr<URogueActionSystemComponent> ActionSystemComponent;
 
 	void Move(const FInputActionValue& InValue);
-
 	void Look(const FInputActionInstance& InValue);
 
-	void StartProjectileAttack(TSubclassOf<ARogueProjectile> ProjectileClass);
 
-	void AttackTimerElapsed(TSubclassOf<ARogueProjectile> ProjectileClass);
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	                         class AController* EventInstigator, AActor* DamageCauser);
 
@@ -92,8 +64,8 @@ protected:
 	void OnHealthCanged(float NewHealth, float OldHealth);
 
 	void StartAction(FName InActionName);
-public:
 
+public:
 	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

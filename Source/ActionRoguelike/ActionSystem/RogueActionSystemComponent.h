@@ -33,24 +33,28 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	virtual void InitializeComponent() override;
+	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
+
 	void StartAction(FName InActionName);
-	
+
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChanged OnHealthChanged;
 	void ApplyHealthChange(float InValueChange);
 	float IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
 	float GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
 	float GetHealth() const;
 	float GetHealthMax() const;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnHealthChanged OnHealthChanged;
-
-	virtual void InitializeComponent() override;
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="Attributes")
 	FRogueAttributeSet Attributes;
 
 	UPROPERTY()
 	TArray<TObjectPtr<URogueAction>> Actions;
+	
+	UPROPERTY(EditAnywhere, Category="Actions")
+	TArray<TSubclassOf<URogueAction>> DefaultActions;
 
 public:
 	URogueActionSystemComponent();
