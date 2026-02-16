@@ -285,7 +285,9 @@ Observer Aborts: Lower Priority
 블루프린트 Pure Function 매번 다시 실행됨 
 
 해결법 3가지 
-1. 결과를 변수에 저장해서 재사용
+1. 결과를 BP 안에서 변수 만들어 해결
 2. 노드 우클릭 → exec pin 활성화 (순수 함수 해제) : exec 체인에 연결해야 의미있음
 3. 블루프린트 노출 시킬 함수가 비싼 함수면 BlueprintPure 키워드 붙이지 말것 
 
+
+Transient

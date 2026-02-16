@@ -76,6 +76,7 @@ void URogueAction_ProjectileAttack::AttackTimerElapsed()
 
 	Character->MoveIgnoreActorAdd(NewProjectile);
 
+	StopAction();
 #if !UE_BUILD_SHIPPING
 	float DebugDrawDuration = CVarProjectileAdjustmentDebugDrawing.GetValueOnGameThread();
 	if (DebugDrawDuration > 0.0f)

@@ -16,10 +16,16 @@ class ACTIONROGUELIKE_API URogueAction : public UObject
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Actions")
 	FName ActionName = FName("PrimaryAttack");
-
+	
+	UPROPERTY(EditDefaultsOnly, Category="Actions")
+	float CooldownTime = 0.0f;
 public:
 	UFUNCTION(BlueprintCallable)
 	URogueActionSystemComponent* GetOwningComponent() const;
+
+	bool IsRunning() const;
+	bool CanStart() const;
+	float GetCooldownTimeRemaining() const;
 
 	UFUNCTION(BlueprintNativeEvent, Category= "Actions")
 	void StartAction();
@@ -31,4 +37,11 @@ public:
 	{
 		return ActionName;
 	}
+	
+protected:
+	UPROPERTY(Transient)
+	float CooldownUntil = 0;
+
+	UPROPERTY(Transient)
+	bool bIsRunning = false;
 };
