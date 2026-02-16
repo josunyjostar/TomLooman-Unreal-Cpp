@@ -289,5 +289,19 @@ Observer Aborts: Lower Priority
 2. 노드 우클릭 → exec pin 활성화 (순수 함수 해제) : exec 체인에 연결해야 의미있음
 3. 블루프린트 노출 시킬 함수가 비싼 함수면 BlueprintPure 키워드 붙이지 말것 
 
+Transient : 런타임에서만 의미잇는 값이니까(휘발성 데이터) 직렬화에서 제외한다 
 
-Transient
+
+
+
+
+DefaultGameplayTags.ini
+
+------------------------------------
+
+Boil down to	결국 ~로 요약되다
+
+Build on top of	~을 기반으로 더 쌓아 올리다
+
+
+
