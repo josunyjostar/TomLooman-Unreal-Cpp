@@ -36,6 +36,9 @@ protected:
 	TObjectPtr<UInputAction> Input_Jump;
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> Input_Sprint;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_PrimaryAttack;
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
@@ -64,6 +67,7 @@ protected:
 	void OnHealthCanged(float NewHealth, float OldHealth);
 
 	void StartAction(FName InActionName);
+	void StopAction(FName InActionName);
 
 public:
 	virtual void PostInitializeComponents() override;

@@ -244,16 +244,42 @@ Observer Aborts: Lower Priority
 
 -------------------
 
+언리얼 규칙
 
-NewObject는 AActor를 상속받지 않은 일반 C++ 클래스(UObject 상속 클래스)의 인스턴스를 생성할 때 사용
+[1] NewObject
+----------------------------------------------
+- AActor를 상속받지 않은 일반 UObject 클래스의
+  인스턴스를 생성할 때 사용
+- AActor 상속 클래스는 SpawnActor 사용
 
 
+[2] BlueprintNativeEvent
+----------------------------------------------
+- C++ 기본 구현 제공 + BP에서 선택적 오버라이드
+
+  부모 클래스:
+    헤더  -> UFUNCTION(BlueprintNativeEvent)
+             void 함수명();
+    cpp   -> void UClass::함수명_Implementation() { ... }
+
+  자식 클래스 (C++ 오버라이드):
+    헤더  -> virtual void 함수명_Implementation() override;
+    cpp   -> void UChildClass::함수명_Implementation() { ... }
+
+  호출은 _Implementation 붙이지 않고 호출
+
+  실행 우선순위:
+    BP 오버라이드 -> C++ _Implementation
+
+  주의:
+    BP에서 Super/Parent 호출 안 하면
+    원래 C++ 구현은 건너뜀
+
+
+[3] BlueprintImplementableEvent
+----------------------------------------------
+- C++ 구현 없음, BP에서만 구현
+- C++에서 선언만 하고 .cpp에서 구현하지 않음
 
 
 -------------------
-chugging along 느릿하지만 꾸준히 잘 돌아가다
-shorthand 약칭
-viable 실행 가능한
-quick hack 임시방편
-let go of ~에서 손을 떼다
-fall off 밀려나다

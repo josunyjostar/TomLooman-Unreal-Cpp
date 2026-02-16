@@ -37,6 +37,12 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	EnhancedInput->BindAction(Input_Look, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::Look);
 	EnhancedInput->BindAction(Input_Jump, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::Jump);
 
+	EnhancedInput->BindAction(Input_Sprint, ETriggerEvent::Started, this,
+	&ThisClass::StartAction, FName("Sprint"));
+	
+	EnhancedInput->BindAction(Input_Sprint, ETriggerEvent::Completed, this,
+		&ThisClass::StopAction, FName("Sprint"));
+	
 	EnhancedInput->BindAction(Input_PrimaryAttack, ETriggerEvent::Triggered, this,
 	                          &ThisClass::StartAction, FName("PrimaryAttack"));
 
@@ -93,4 +99,9 @@ void ARoguePlayerCharacter::OnHealthCanged(float NewHealth, float OldHealth)
 void ARoguePlayerCharacter::StartAction(FName InActionName)
 {
 	ActionSystemComponent->StartAction(InActionName);
+}
+
+void ARoguePlayerCharacter::StopAction(FName InActionName)
+{
+	ActionSystemComponent->StopAction(InActionName);
 }

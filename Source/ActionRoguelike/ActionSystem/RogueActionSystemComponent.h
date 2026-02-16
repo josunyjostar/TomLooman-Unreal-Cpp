@@ -37,6 +37,7 @@ public:
 	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
 
 	void StartAction(FName InActionName);
+	void StopAction(FName InActionName);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;

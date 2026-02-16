@@ -40,6 +40,21 @@ void URogueActionSystemComponent::StartAction(FName InActionName)
 	UE_LOG(LogTemp, Warning, TEXT("No Action found with name %s"), *InActionName.ToString());
 }
 
+void URogueActionSystemComponent::StopAction(FName InActionName)
+{
+	for (URogueAction* Action : Actions)
+	{
+		if (Action->GetActionName() == InActionName)
+		{
+			Action->StopAction();
+			return;
+		}
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("No Action found with name %s"), *InActionName.ToString());
+}
+
+
 void URogueActionSystemComponent::ApplyHealthChange(float InValueChange)
 {
 	const float OldHealth = Attributes.Health;
