@@ -26,7 +26,8 @@ ARoguePlayerCharacter::ARoguePlayerCharacter()
 void ARoguePlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	ActionSystemComponent->OnHealthChanged.AddDynamic(this, &ARoguePlayerCharacter::OnHealthChanged);
+	FOnAttributeChanged& Event = ActionSystemComponent->GetAttributeListener(SharedGameplayTags::Attribute_Health);
+	Event.AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -105,4 +106,16 @@ void ARoguePlayerCharacter::StartAction(FGameplayTag InActionName)
 void ARoguePlayerCharacter::StopAction(FGameplayTag InActionName)
 {
 	ActionSystemComponent->StopAction(InActionName);
+}
+
+void ARoguePlayerCharacter::OnHealthChanged(FGameplayTag AttributeTag, float NewHealth, float OldHealth)
+{
+	if (FMath::IsNearlyZero(NewHealth))
+	{
+		DisableInput(nullptr);
+
+		GetMovementComponent()->StopMovementImmediately();
+
+		PlayAnimMontage(DeathMontage);
+	}
 }

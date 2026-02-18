@@ -353,7 +353,46 @@ UBlueprintFunctionLibrary 핵심 주의사항
   - 예: InventoryHelpers, CombatUtils, MathLibrary 등으로 분리
 
 
-Feat: 14-5 범용 Attribute 변경 시스템 (ApplyAttributeChange) 구현
-                                                                                                                                                                                              
-  - 핵심 ApplyAttributeChange
-  - RogueGameplayStatics 유틸 클래스 추가 (IsFullHealth)
+------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+Feat: 15-4 범용 Attribute 변경 델리게이트 시스템 구현 (Broadcast / Listener)                                         
+
+- Native 델리게이트(FOnAttributeChanged)로 전환하여 모든 Attribute에 범용 적용
+- TMap 기반 태그별 리스너 등록 (GetAttributeListener)                                                               
+- ApplyAttributeChange에서 변경 시 자동 Broadcast  
+
+
+
+
+
+
+
+
+  Feat: 15-4 GameplayTag 기반 범용 Attribute 변경 리스너 시스템 구현
+  - Dynamic 델리게이트(FOnHealthChanged)를 Native 델리게이트(FOnAttributeChanged)로 전환
+  - TMap 기반 태그별 리스너 등록/조회 (GetAttributeListener + FindOrAdd)
+  - ApplyAttributeChange에서 변경 시 자동 Broadcast
+
+
+
+
+
+
+
+
+
+
+
+
+

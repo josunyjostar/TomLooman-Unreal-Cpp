@@ -38,7 +38,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Sprint;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_PrimaryAttack;
 
@@ -60,15 +60,13 @@ protected:
 	void Move(const FInputActionValue& InValue);
 	void Look(const FInputActionInstance& InValue);
 
-
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	                         class AController* EventInstigator, AActor* DamageCauser);
-
-	UFUNCTION()
-	void OnHealthChanged(float NewHealth, float OldHealth);
-
+	
 	void StartAction(FGameplayTag InActionName);
 	void StopAction(FGameplayTag InActionName);
+
+	void OnHealthChanged(FGameplayTag AttributeTag, float NewHealth, float OldHealth);
 
 public:
 	virtual void PostInitializeComponents() override;
