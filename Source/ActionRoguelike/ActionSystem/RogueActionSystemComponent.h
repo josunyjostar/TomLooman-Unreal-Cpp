@@ -7,6 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "RogueActionSystemComponent.generated.h"
 
+struct FRogueAttribute;
 class URogueAttributeSet;
 class URogueAction;
 
@@ -19,7 +20,6 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-
 	void StartAction(FGameplayTag InActionName);
 	void StopAction(FGameplayTag InActionName);
 
@@ -38,11 +38,14 @@ public:
 	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
 
 	FGameplayTagContainer ActiveGameplayTags;
+	
+	FRogueAttribute* GetAttribute(FGameplayTag InAttributeTag);
 
 protected:
-
 	UPROPERTY()
 	TObjectPtr<URogueAttributeSet> Attributes;
+
+	TMap<FGameplayTag, FRogueAttribute*> CachedAttributes;
 
 	UPROPERTY(EditAnywhere, Category=Attributes, NoClear)
 	TSubclassOf<URogueAttributeSet> AttributeSetClass;
@@ -54,6 +57,5 @@ protected:
 	TArray<TSubclassOf<URogueAction>> DefaultActions;
 
 public:
-
 	URogueActionSystemComponent();
 };
