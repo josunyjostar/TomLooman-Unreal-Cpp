@@ -12,13 +12,13 @@ URogueActionSystemComponent::URogueActionSystemComponent()
 void URogueActionSystemComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
-	
+
 	Attributes = NewObject<URogueAttributeSet>(this, AttributeSetClass);
-	
+
 	for (TFieldIterator<FStructProperty> PropIt(Attributes->GetClass()); PropIt; ++PropIt)
 	{
 		FRogueAttribute* FoundAttribute = PropIt->ContainerPtrToValuePtr<FRogueAttribute>(Attributes);
-		
+
 		FName AttributeTagName = FName("Attribute." + PropIt->GetName());
 		FGameplayTag AttributeTag = FGameplayTag::RequestGameplayTag(AttributeTagName);
 
@@ -72,36 +72,35 @@ void URogueActionSystemComponent::StopAction(FGameplayTag InActionName)
 	UE_LOG(LogTemp, Warning, TEXT("No Action found with name %s"), *InActionName.ToString());
 }
 
-
-void URogueActionSystemComponent::ApplyHealthChange(float InValueChange)
+void URogueActionSystemComponent::ApplyAttributeChange(FGameplayTag AttributeTag, float Delta,
+                                                       EAttributeModifyType ModifyType)
 {
-	// const float OldHealth = Attributes.Health;
-	// Attributes.Health = FMath::Clamp(Attributes.Health + InValueChange, 0.f, Attributes.HealthMax);
-	//
-	// if (!FMath::IsNearlyEqual(OldHealth, Attributes.Health))
-	// {
-	// 	OnHealthChanged.Broadcast(Attributes.Health, OldHealth);
-	// }
-}
+	FRogueAttribute* FoundAttribute = GetAttribute(AttributeTag);
+	check(FoundAttribute);
 
-bool URogueActionSystemComponent::IsFullHealth() const
-{
-	return true;
-}
+	float OldValue = FoundAttribute->GetValue();
 
-float URogueActionSystemComponent::GetHealthPercent() const
-{
-	return 0.f;
-}
+	switch (ModifyType)
+	{
+	case Base:
+		FoundAttribute->Base += Delta;
+		break;
+	case Modifier:
+		FoundAttribute->Modifier += Delta;
+		break;
+	case OverrideBase:
+		FoundAttribute->Base = Delta;
+		break;
+	default:
+		check(false);
+	}
 
-float URogueActionSystemComponent::GetHealth() const
-{
-	return 0.f;
-}
+	Attributes->PostAttributeChanged();
 
-float URogueActionSystemComponent::GetHealthMax() const
-{
-	return 0.f;
+	UE_LOGFMT(LogTemp, Log, "Attribute: {0}, New: {1}, Old: {2}",
+	          AttributeTag.ToString(),
+	          FoundAttribute->GetValue(),
+	          OldValue);
 }
 
 FRogueAttribute* URogueActionSystemComponent::GetAttribute(FGameplayTag InAttributeTag)

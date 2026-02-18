@@ -26,7 +26,7 @@ ARoguePlayerCharacter::ARoguePlayerCharacter()
 void ARoguePlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	ActionSystemComponent->OnHealthChanged.AddDynamic(this, &ARoguePlayerCharacter::OnHealthCanged);
+	ActionSystemComponent->OnHealthChanged.AddDynamic(this, &ARoguePlayerCharacter::OnHealthChanged);
 }
 
 void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -82,12 +82,12 @@ float ARoguePlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent 
                                         class AController* EventInstigator, AActor* DamageCauser)
 {
 	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	ActionSystemComponent->ApplyHealthChange(-ActualDamage);
+	ActionSystemComponent->ApplyAttributeChange(SharedGameplayTags::Attribute_Health, -ActualDamage, Base);
 
 	return ActualDamage;
 }
 
-void ARoguePlayerCharacter::OnHealthCanged(float NewHealth, float OldHealth)
+void ARoguePlayerCharacter::OnHealthChanged(float NewHealth, float OldHealth)
 {
 	if (FMath::IsNearlyZero(NewHealth))
 	{

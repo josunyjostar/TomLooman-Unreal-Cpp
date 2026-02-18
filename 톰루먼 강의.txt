@@ -12,7 +12,10 @@ Edit > Editor Preferences > General > Source Code > Source Code Editor
 언리얼 - 쉬프트 + F1 (실행하고 마우스 컨트롤 획득)
 언리얼 - 컨트롤 + P (오픈에셋)
 언리얼 - 컨트롤 + 스페이스 (컨텐츠 브라우저)
-Win + Ctrl + L 
+언리얼 - Ctrl + P (오픈에셋 윈도우)
+
+
+Win + Ctrl + L - 윈도우11 보이스캡쳐
 
 ~ slomo 0.2
 ~ 누르고 show collision 
@@ -32,6 +35,16 @@ Use Pawn Control Rotation - 스프링암이 캐릭터의 컨트롤 회전에 따
 캐릭터가 PlayerController의 좌우 회전(Yaw)을 따라 회전 
 
 --------------------------------------
+
+● bReceiveDecals                                                                                                                                                                              
+  - 메시/컴포넌트가 데칼(Decal)을 받을지 여부를 결정하는 bool                                                                                                                                 
+  - false로 설정하면 해당 액터에 데칼(혈흔, 탄흔 등)이 투영되지 않음                                                                                                                             
+
+●   BlueprintType                                                                                                                                                                               
+  - UCLASS(BlueprintType) 또는 USTRUCT(BlueprintType)에 쓰이는 지정자
+  - 해당 타입을 블루프린트에서 변수로 선언할 수 있게 허용함
+  - 없으면 블루프린트 에디터에서 해당 타입의 변수를 만들 수 없음
+
 
 should bounce  - projectile movement 
 hidden in game 
@@ -300,9 +313,6 @@ Transient : 런타임에서만 의미잇는 값이니까(휘발성 데이터) �
 
 
 TSoftObjectPtr 사용법
-bReceiveDecals
-BlueprintType - 
-
 
 AnimInstance : 애니메이션 상태를 제어하는 클래스
 
@@ -318,3 +328,32 @@ MovementRotation.RotateVector(FVector::RightVector) : 월드 기준 벡터를 �
 
 
 ------------------------------------
+
+리플렉션 시스템 
+
+*런타임에 클래스의 멤버 정보(이름, 타입, 메모리 오프셋)를 조회가능
+  런타임에 TFieldIterator로 순회하며 조회 가능
+
+
+------------------------------------
+UBlueprintFunctionLibrary를 사용하는 이유:
+
+  - UGameplayStatics를 상속하면 내부에 참조된 대량의 엔진 헤더가 함께 포함됨
+  - 가벼운 유틸리티 함수 몇 개를 위해 불필요한 의존성이 생기고 컴파일 시간이 늘어남
+  - UBlueprintFunctionLibrary는 최소한의 의존성만 가지므로, 필요한 헤더만 직접 include하여 경량으로 유지 가능                                                                                 
+  
+UBlueprintFunctionLibrary 핵심 주의사항
+
+1. 하드 레퍼런스 주의 (가장 중요) 
+  - 라이브러리 함수가 에셋을 직접 참조하면, 사용 시 참조된 모든 에셋이 메모리에 로드됨
+  - → TSoftObjectPtr (소프트 레퍼런스) 사용하고, 사이즈 맵으로 의존성 확인할 것                                                                                                               
+  
+2. 기능별로 분리
+  - 하나의 거대한 라이브러리에 몰아넣지 말 것
+  - 예: InventoryHelpers, CombatUtils, MathLibrary 등으로 분리
+
+
+Feat: 14-5 범용 Attribute 변경 시스템 (ApplyAttributeChange) 구현
+                                                                                                                                                                                              
+  - 핵심 ApplyAttributeChange
+  - RogueGameplayStatics 유틸 클래스 추가 (IsFullHealth)

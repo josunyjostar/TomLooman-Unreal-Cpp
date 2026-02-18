@@ -65,7 +65,7 @@ protected:
 	                         class AController* EventInstigator, AActor* DamageCauser);
 
 	UFUNCTION()
-	void OnHealthCanged(float NewHealth, float OldHealth);
+	void OnHealthChanged(float NewHealth, float OldHealth);
 
 	void StartAction(FGameplayTag InActionName);
 	void StopAction(FGameplayTag InActionName);

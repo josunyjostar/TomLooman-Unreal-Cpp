@@ -13,6 +13,14 @@ class URogueAction;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, OldHealth);
 
+UENUM()
+enum EAttributeModifyType
+{
+	Base,
+	Modifier,
+	OverrideBase,
+	Invalid
+};
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
@@ -22,24 +30,18 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 public:
 	void StartAction(FGameplayTag InActionName);
 	void StopAction(FGameplayTag InActionName);
+	void ApplyAttributeChange(FGameplayTag AttributeTag, float Delta, EAttributeModifyType ModifyType);
 
-	void ApplyHealthChange(float InValueChange);
-	bool IsFullHealth() const;
-	float GetHealthPercent() const;
+	FRogueAttribute* GetAttribute(FGameplayTag InAttributeTag);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
-
-	float GetHealth() const;
-	float GetHealthMax() const;
 
 	virtual void InitializeComponent() override;
 
 	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
 
 	FGameplayTagContainer ActiveGameplayTags;
-	
-	FRogueAttribute* GetAttribute(FGameplayTag InAttributeTag);
 
 protected:
 	UPROPERTY()

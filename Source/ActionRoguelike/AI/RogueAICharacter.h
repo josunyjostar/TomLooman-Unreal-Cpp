@@ -20,11 +20,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<URogueActionSystemComponent> ActionSystemComponent;
 
-	virtual void PostInitializeComponents() override;
-	
+
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
-						 class AController* EventInstigator, AActor* DamageCauser);
-	
-	UFUNCTION()
-	void OnHealthCanged(float NewHealth, float OldHealth);
+	                         class AController* EventInstigator, AActor* DamageCauser);
 };
