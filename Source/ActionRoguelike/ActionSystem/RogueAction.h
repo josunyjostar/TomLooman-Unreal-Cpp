@@ -17,9 +17,10 @@ class ACTIONROGUELIKE_API URogueAction : public UObject
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Actions")
 	FGameplayTag ActionName;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category="Actions")
 	float CooldownTime = 0.0f;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	URogueActionSystemComponent* GetOwningComponent() const;
@@ -33,16 +34,23 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, Category= "Actions")
 	void StopAction();
-	
+
 	FGameplayTag GetActionName() const
 	{
 		return ActionName;
 	}
-	
+
 protected:
 	UPROPERTY(Transient)
 	float CooldownUntil = 0;
 
 	UPROPERTY(Transient)
 	bool bIsRunning = false;
+
+
+	UPROPERTY(EditDefaultsOnly, Category="Actions")
+	FGameplayTagContainer GrantTags;
+
+	UPROPERTY(EditDefaultsOnly, Category="Actions")
+	FGameplayTagContainer BlockedTags;
 };

@@ -1,5 +1,10 @@
 DefaultsOnly - 블루프린트 에디터에서만 이라는뜻
 
+Tool -> Debug -> Visual Logger
+Edit → Editor Preferences →  General → Appearance →  Asset Editor Open Location
+Project Setting -> input component
+Edit > Editor Preferences > General > Source Code > Source Code Editor
+
 라이더 - 쉬프트 + 알트  + O 
 라이더 - 컨트롤 + D
 라이더 - 컨트롤 + 쉬프트 + K
@@ -9,8 +14,7 @@ DefaultsOnly - 블루프린트 에디터에서만 이라는뜻
 언리얼 - 컨트롤 + 스페이스 (컨텐츠 브라우저)
 Win + Ctrl + L 
 
-Tool -> Visual Logger
-
+~ slomo 0.2
 ~ 누르고 show collision 
 TAutoConsoleVariable<>
 ' 누르면 게임 디버그  (AI의 경우 해당 AI가 근처에 잇거나 선택해야 뜸)
@@ -68,7 +72,7 @@ Instigator 어떤 행동을 시작한 주체(원인 제공자)
 --------------------------------------
 에셋 할당은 C++ 대신 항상 블루프린트에서 수행한다는 점을 기억
 
-틸트 = slomo 0.2
+
 슬롯은 그냥 애니몽타주가 플레이 되는 곳 : 원래 애니메이션 → 몽타주로 전환 (그냥 애니메이션 스위칭임)
 
 이펙스 생성
@@ -294,14 +298,28 @@ Transient : 런타임에서만 의미잇는 값이니까(휘발성 데이터) �
 
 
 
-
-DefaultGameplayTags.ini
-
 ------------------------------------
 
-Boil down to	결국 ~로 요약되다
 
-Build on top of	~을 기반으로 더 쌓아 올리다
+TSoftObjectPtr 사용법
+bReceiveDecals
+BlueprintType - 
 
 
+AnimInstance : 애니메이션 상태를 제어하는 클래스
 
+  - 스켈레탈 메쉬에 어떤 애니메이션을 재생할지 결정
+  - C++ / 블루프린트에서 게임 로직 데이터(속도, 가속 여부 등)를 받아서 Animation Blueprint에 전달
+  - Animation Blueprint의 AnimGraph가 이 데이터를 기반으로 블렌딩, 전환 등을 처리
+
+MovementRotation.RotateVector(FVector::RightVector)
+MovementRotation	   : 얼마나 회전시킬지 (회전량, 현재 월드  회전)
+FVector::RightVector : 회전당하는 대상 (벡터)
+= FVector::RightVector를 MovementRotation만큼 회전시켜라
+MovementRotation.RotateVector(FVector::RightVector) : 월드 기준 벡터를 로컬 캐릭터만큼 회전 시키는것
+
+
+------------------------------------
+miscellaneous 이것저것 다양한
+Under the hood 내부적으로 
+Demystify  쉽게 설명해주다 

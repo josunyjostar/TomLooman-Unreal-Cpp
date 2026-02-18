@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "RogueActionSystemComponent.generated.h"
 
-
-struct FGameplayTag;
 class URogueAction;
 
 USTRUCT(BlueprintType)
@@ -34,6 +33,8 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	FGameplayTagContainer ActiveGameplayTags;
+	
 	virtual void InitializeComponent() override;
 	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
 
@@ -54,7 +55,7 @@ protected:
 
 	UPROPERTY()
 	TArray<TObjectPtr<URogueAction>> Actions;
-	
+
 	UPROPERTY(EditAnywhere, Category="Actions")
 	TArray<TSubclassOf<URogueAction>> DefaultActions;
 
