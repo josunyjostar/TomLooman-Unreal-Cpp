@@ -296,8 +296,6 @@ Observer Aborts: Lower Priority
 Transient : 런타임에서만 의미잇는 값이니까(휘발성 데이터) 직렬화에서 제외한다 
 
 
-
-
 ------------------------------------
 
 
@@ -320,6 +318,3 @@ MovementRotation.RotateVector(FVector::RightVector) : 월드 기준 벡터를 �
 
 
 ------------------------------------
-miscellaneous 이것저것 다양한
-Under the hood 내부적으로 
-Demystify  쉽게 설명해주다 

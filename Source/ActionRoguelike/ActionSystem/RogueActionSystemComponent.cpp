@@ -1,15 +1,19 @@
 ﻿#include "RogueActionSystemComponent.h"
 
 #include "RogueAction.h"
+#include "RogueAttributeSet.h"
 
 URogueActionSystemComponent::URogueActionSystemComponent()
 {
 	bWantsInitializeComponent = true;
+	AttributeSetClass = URogueAttributeSet::StaticClass();
 }
 
 void URogueActionSystemComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
+	
+	Attributes = NewObject<URogueAttributeSet>(this, AttributeSetClass);
 
 	for (TSubclassOf<URogueAction> ActionClass : DefaultActions)
 	{
@@ -60,21 +64,31 @@ void URogueActionSystemComponent::StopAction(FGameplayTag InActionName)
 
 void URogueActionSystemComponent::ApplyHealthChange(float InValueChange)
 {
-	const float OldHealth = Attributes.Health;
-	Attributes.Health = FMath::Clamp(Attributes.Health + InValueChange, 0.f, Attributes.HealthMax);
+	// const float OldHealth = Attributes.Health;
+	// Attributes.Health = FMath::Clamp(Attributes.Health + InValueChange, 0.f, Attributes.HealthMax);
+	//
+	// if (!FMath::IsNearlyEqual(OldHealth, Attributes.Health))
+	// {
+	// 	OnHealthChanged.Broadcast(Attributes.Health, OldHealth);
+	// }
+}
 
-	if (!FMath::IsNearlyEqual(OldHealth, Attributes.Health))
-	{
-		OnHealthChanged.Broadcast(Attributes.Health, OldHealth);
-	}
+bool URogueActionSystemComponent::IsFullHealth() const
+{
+	return true;
+}
+
+float URogueActionSystemComponent::GetHealthPercent() const
+{
+	return 0.f;
 }
 
 float URogueActionSystemComponent::GetHealth() const
 {
-	return Attributes.Health;
+	return 0.f;
 }
 
 float URogueActionSystemComponent::GetHealthMax() const
 {
-	return Attributes.HealthMax;
+	return 0.f;
 }

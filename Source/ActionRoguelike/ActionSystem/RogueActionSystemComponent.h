@@ -7,25 +7,11 @@
 #include "Components/ActorComponent.h"
 #include "RogueActionSystemComponent.generated.h"
 
+class URogueAttributeSet;
 class URogueAction;
 
-USTRUCT(BlueprintType)
-struct FRogueAttributeSet
-{
-	GENERATED_BODY()
-	FRogueAttributeSet()
-		: Health(100.0f), HealthMax(100.f)
-	{
-	}
-
-	UPROPERTY(BlueprintReadOnly)
-	float Health;
-
-	UPROPERTY(BlueprintReadOnly)
-	float HealthMax;
-};
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, OldHealth);
+
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
@@ -33,25 +19,33 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	FGameplayTagContainer ActiveGameplayTags;
-	
-	virtual void InitializeComponent() override;
-	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
 
 	void StartAction(FGameplayTag InActionName);
 	void StopAction(FGameplayTag InActionName);
 
+	void ApplyHealthChange(float InValueChange);
+	bool IsFullHealth() const;
+	float GetHealthPercent() const;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
-	void ApplyHealthChange(float InValueChange);
-	float IsFullHealth() const { return (Attributes.Health < Attributes.HealthMax); }
-	float GetHealthPercent() const { return Attributes.Health / Attributes.HealthMax; }
+
 	float GetHealth() const;
 	float GetHealthMax() const;
 
+	virtual void InitializeComponent() override;
+
+	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
+
+	FGameplayTagContainer ActiveGameplayTags;
+
 protected:
-	UPROPERTY(BlueprintReadOnly, Category="Attributes")
-	FRogueAttributeSet Attributes;
+
+	UPROPERTY()
+	TObjectPtr<URogueAttributeSet> Attributes;
+
+	UPROPERTY(EditAnywhere, Category=Attributes, NoClear)
+	TSubclassOf<URogueAttributeSet> AttributeSetClass;
 
 	UPROPERTY()
 	TArray<TObjectPtr<URogueAction>> Actions;
@@ -60,5 +54,6 @@ protected:
 	TArray<TSubclassOf<URogueAction>> DefaultActions;
 
 public:
+
 	URogueActionSystemComponent();
 };
